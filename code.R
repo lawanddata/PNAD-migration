@@ -11,6 +11,7 @@ library(tidyverse)
 library(ggplot2)
 library(stringr)
 library(purrr)
+library(dplyr)
 
 #creates vector year
 ##years = c()
@@ -518,7 +519,7 @@ pnadmig_2015d_SE <- svydesign(
 
 #Analysis-----------------------------------------------------------------------
 
-##V0502 - Nasceu nesta UF
+##V0502_SE - Nasceu nesta UF
 
 ###2001
 
@@ -527,7 +528,8 @@ V0502_2001_SE <- svytotal(~V0502,
                        na.rm = TRUE)
 
 V0502_2001_SE <- as.data.frame(V0502_2001_SE) #dataframe
-rownames(V0502_2001_SE) <- c("Nao Aplicavel", "Sim - Nasceu nesta UF", "Nao - Nao nasceu nesta UF")
+rownames(V0502_2001_SE) <- c("NA", "Sim", "Nao") #changes row names
+V0502_2001_SE$nasceu_nesta_UF <- rownames(V0502_2001_SE) #assign row names to a new variable - for chart later
 V0502_2001_SE <- V0502_2001_SE %>% 
               mutate(proportion = total/sum(total), year = "2001") #adding year and calculating proportion
 
@@ -539,7 +541,8 @@ V0502_2002_SE <- svytotal(~V0502,
                           na.rm = TRUE)
 
 V0502_2002_SE <- as.data.frame(V0502_2002_SE) #dataframe
-rownames(V0502_2002_SE) <- c("Nao Aplicavel", "Sim - Nasceu nesta UF", "Nao - Nao nasceu nesta UF")
+rownames(V0502_2002_SE) <- c("NA", "Sim", "Nao")
+V0502_2002_SE$nasceu_nesta_UF <- rownames(V0502_2002_SE)
 V0502_2002_SE <- V0502_2002_SE %>% 
   mutate(proportion = total/sum(total), year = "2002") #adding year and calculating proportion
 
@@ -551,7 +554,8 @@ V0502_2003_SE <- svytotal(~V0502,
                           na.rm = TRUE)
 
 V0502_2003_SE <- as.data.frame(V0502_2003_SE) #dataframe
-rownames(V0502_2003_SE) <- c("Nao Aplicavel", "Sim - Nasceu nesta UF", "Nao - Nao nasceu nesta UF")
+rownames(V0502_2003_SE) <- c("NA", "Sim", "Nao")
+V0502_2003_SE$nasceu_nesta_UF <- rownames(V0502_2003_SE)
 V0502_2003_SE <- V0502_2003_SE %>% 
   mutate(proportion = total/sum(total), year = "2003") #adding year and calculating proportion
 
@@ -562,7 +566,8 @@ V0502_2004_SE <- svytotal(~V0502,
                           na.rm = TRUE)
 
 V0502_2004_SE <- as.data.frame(V0502_2004_SE) #dataframe
-rownames(V0502_2004_SE) <- c("Nao Aplicavel", "Sim - Nasceu nesta UF", "Nao - Nao nasceu nesta UF")
+rownames(V0502_2004_SE) <- c("NA", "Sim", "Nao")
+V0502_2004_SE$nasceu_nesta_UF <- rownames(V0502_2004_SE)
 V0502_2004_SE <- V0502_2004_SE %>% 
   mutate(proportion = total/sum(total), year = "2004") #adding year and calculating proportion
 
@@ -573,7 +578,8 @@ V0502_2005_SE <- svytotal(~V0502,
                           na.rm = TRUE)
 
 V0502_2005_SE <- as.data.frame(V0502_2005_SE) #dataframe
-rownames(V0502_2005_SE) <- c("Nao Aplicavel", "Sim - Nasceu nesta UF", "Nao - Nao nasceu nesta UF")
+rownames(V0502_2005_SE) <- c("NA", "Sim", "Nao")
+V0502_2005_SE$nasceu_nesta_UF <- rownames(V0502_2005_SE)
 V0502_2005_SE <- V0502_2005_SE %>% 
   mutate(proportion = total/sum(total), year = "2005") #adding year and calculating proportion
 
@@ -584,7 +590,8 @@ V0502_2006_SE <- svytotal(~V0502,
                           na.rm = TRUE)
 
 V0502_2006_SE <- as.data.frame(V0502_2006_SE) #dataframe
-rownames(V0502_2006_SE) <- c("Nao Aplicavel", "Sim - Nasceu nesta UF", "Nao - Nao nasceu nesta UF")
+rownames(V0502_2006_SE) <- c("NA", "Sim", "Nao")
+V0502_2006_SE$nasceu_nesta_UF <- rownames(V0502_2006_SE)
 V0502_2006_SE <- V0502_2006_SE %>% 
   mutate(proportion = total/sum(total), year = "2006") #adding year and calculating proportion
 
@@ -595,14 +602,150 @@ V0502_2007_SE <- svytotal(~V0502,
                           na.rm = TRUE)
 
 V0502_2007_SE <- as.data.frame(V0502_2007_SE) #dataframe
-rownames(V0502_2007_SE) <- c("Nao Aplicavel", "Sim - Nasceu nesta UF", "Nao - Nao nasceu nesta UF")
+rownames(V0502_2007_SE) <- c("NA", "Sim", "Nao")
+V0502_2007_SE$nasceu_nesta_UF <- rownames(V0502_2007_SE)
 V0502_2007_SE <- V0502_2007_SE %>% 
   mutate(proportion = total/sum(total), year = "2007") #adding year and calculating proportion
 
 ###2008
 
+V0502_2008_SE <- svytotal(~V0502,
+                          design = pnadmig_2008d_SE,
+                          na.rm = TRUE)
+
+V0502_2008_SE <- as.data.frame(V0502_2008_SE) #dataframe
+rownames(V0502_2008_SE) <- c("NA", "Sim", "Nao")
+V0502_2008_SE$nasceu_nesta_UF <- rownames(V0502_2008_SE)
+V0502_2008_SE <- V0502_2008_SE %>% 
+  mutate(proportion = total/sum(total), year = "2008") #adding year and calculating proportion
+
+###2009
+
+V0502_2009_SE <- svytotal(~V0502,
+                          design = pnadmig_2009d_SE,
+                          na.rm = TRUE)
+
+V0502_2009_SE <- as.data.frame(V0502_2009_SE) #dataframe
+rownames(V0502_2009_SE) <- c("NA", "Sim", "Nao")
+V0502_2009_SE$nasceu_nesta_UF <- rownames(V0502_2009_SE)
+V0502_2009_SE <- V0502_2009_SE %>% 
+  mutate(proportion = total/sum(total), year = "2009") #adding year and calculating proportion
+
+###2011
+
+V0502_2011_SE <- svytotal(~V0502,
+                          design = pnadmig_2011d_SE,
+                          na.rm = TRUE)
+
+V0502_2011_SE <- as.data.frame(V0502_2011_SE) #dataframe
+rownames(V0502_2011_SE) <- c("NA", "Sim", "Nao")
+V0502_2011_SE$nasceu_nesta_UF <- rownames(V0502_2011_SE)
+V0502_2011_SE <- V0502_2011_SE %>% 
+  mutate(proportion = total/sum(total), year = "2011") #adding year and calculating proportion
+
+###2012
+
+V0502_2012_SE <- svytotal(~V0502,
+                          design = pnadmig_2012d_SE,
+                          na.rm = TRUE)
+
+V0502_2012_SE <- as.data.frame(V0502_2012_SE) #dataframe
+rownames(V0502_2012_SE) <- c("NA", "Sim", "Nao")
+V0502_2012_SE$nasceu_nesta_UF <- rownames(V0502_2012_SE)
+V0502_2012_SE <- V0502_2012_SE %>% 
+  mutate(proportion = total/sum(total), year = "2012") #adding year and calculating proportion
 
 
+###2013
+
+V0502_2013_SE <- svytotal(~V0502,
+                          design = pnadmig_2013d_SE,
+                          na.rm = TRUE)
+
+V0502_2013_SE <- as.data.frame(V0502_2013_SE) #dataframe
+rownames(V0502_2013_SE) <- c("NA", "Sim", "Nao")
+V0502_2013_SE$nasceu_nesta_UF <- rownames(V0502_2013_SE)
+V0502_2013_SE <- V0502_2013_SE %>% 
+  mutate(proportion = total/sum(total), year = "2013") #adding year and calculating proportion
+
+###2014
+
+V0502_2014_SE <- svytotal(~V0502,
+                          design = pnadmig_2014d_SE,
+                          na.rm = TRUE)
+
+V0502_2014_SE <- as.data.frame(V0502_2014_SE) #dataframe
+rownames(V0502_2014_SE) <- c("NA", "Sim", "Nao")
+V0502_2014_SE$nasceu_nesta_UF <- rownames(V0502_2014_SE)
+V0502_2014_SE <- V0502_2014_SE %>% 
+  mutate(proportion = total/sum(total), year = "2014") #adding year and calculating proportion
+
+###2015
+
+V0502_2015_SE <- svytotal(~V0502,
+                          design = pnadmig_2015d_SE,
+                          na.rm = TRUE)
+
+V0502_2015_SE <- as.data.frame(V0502_2015_SE) #dataframe
+rownames(V0502_2015_SE) <- c("NA", "Sim", "Nao")
+V0502_2015_SE$nasceu_nesta_UF <- rownames(V0502_2015_SE)
+V0502_2015_SE <- V0502_2015_SE %>% 
+  mutate(proportion = total/sum(total), year = "2015") #adding year and calculating proportion
+
+###Merge V0502_SE data
+
+V0502_2001_2015_SE <- rbind(V0502_2001_SE, V0502_2002_SE, V0502_2003_SE, V0502_2004_SE, V0502_2005_SE,
+                            V0502_2006_SE, V0502_2007_SE, V0502_2008_SE, V0502_2009_SE, V0502_2011_SE,
+                            V0502_2012_SE, V0502_2013_SE, V0502_2014_SE, V0502_2015_SE)
+
+rownames(V0502_2001_2015_SE) <- NULL
+V0502_2001_2015_SE$nasceu_nesta_UF <- as.factor(V0502_2001_2015_SE$nasceu_nesta_UF)
+
+
+##V0502_2001_2015_SE <- V0502_2001_2015_SE %>%
+##  group_by(nasceu_nesta_UF) %>%               #group_by not working here to calculate change
+##  mutate(prop_change = (proportion/lead(proportion) - 1) * 100)
+
+
+V0502_2001_2015_SE %>%
+  filter(nasceu_nesta_UF == "Nao") %>%
+  ggplot(mapping = aes(x = year, y = proportion)) +
+  geom_line(group = 1) +
+  ylim(0, 0.5)
+
+V0502_2001_2015_SE %>%
+  filter(nasceu_nesta_UF == "Nao") %>%
+  ggplot(mapping = aes(x = year, y = total)) +
+  geom_line(group = 1)
+  
+V0502_2001_2015_SE %>%
+  ggplot(aes(x = proportion, y = year, fill = nasceu_nesta_UF)) +
+  geom_bar(position = "stack", stat = "identity")
+
+bar_V0502_SE
+
+
+
+
+
+chart
+
+chart
+test1 <- t(test)
+
+
+
+V0502_2001_SE$ID <- rownames(table)
+
+colnames(V0502_2001_SE) <- c("nasceu_nesta_UF", "total", "SE", "proportion", "year")
+
+test <- pivot_longer(V0502_2001_SE)
+
+final_dataframe <- as.data.frame(t(V0502_2001_2015_SE))
+ggplot(V0502_2001_2015_SE, aes(x = year, y = )
+
+View(final_dataframe)
+       
 total_20012 <- sum(V0502_2001$total) 
 
 pnadmig_2001d <- svydesign(
