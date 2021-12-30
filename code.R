@@ -140,7 +140,7 @@ pnadmig_2005 <- merge(PES2005_subset, DOM2005_subset,
 
 pnadmig_2005 <- pnadmig_2005 %>%
   mutate(UF = str_extract(V0102, "^\\d{2}")) %>% #creates UF from the control variable
-  mutate(year = 20068) #add year variable, V0101
+  mutate(year = 2005) #add year variable, V0101
 
 #PNAD2006 ----------------------------------------------------------------------
 
@@ -174,7 +174,7 @@ PES2007_subset <- read_PNAD("pessoas", 2007, file = "./Data/PES2007.txt", vars_s
                                                               "V5123", "V5124", "V5125", "V9001", "V4729", "V4732"))
 
 #compared to 2004, no changes
-DOM2006_subset <- read_PNAD("domicilios", 2007, file = "./Data/DOM2007.txt", vars_subset = c("V0102", "V0103", "V4617", "V4618")) 
+DOM2007_subset <- read_PNAD("domicilios", 2007, file = "./Data/DOM2007.txt", vars_subset = c("V0102", "V0103", "V4617", "V4618")) 
 
 pnadmig_2007 <- merge(PES2007_subset, DOM2007_subset,
                       by = c("V0102", "V0103")) #merging by control and series
@@ -266,7 +266,7 @@ pnadmig_2012 <- pnadmig_2012 %>%
 ##download_sourceData("PNAD", 2013, unzip = T)
 
 #compared to 2005, no changes
-PES2013_subset <- read_PNAD("pessoas", file = "./2013/Dados_20170807/Dados/PES2013.txt", 2013, vars_subset =  c("V0102", "V0103", "V0302", "V8005", "V0501", "V0502", "V5030",
+PES2013_subset <- read_PNAD("pessoas", file = "./Data/PES2013.txt", 2013, vars_subset =  c("V0102", "V0103", "V0302", "V8005", "V0501", "V0502", "V5030",
                                                               "V0504", "V0505", "V5061", "V5062", "V5063", "V5064",
                                                               "V5065", "V0507", "V5080", "V5090", "V0510", "V0511", "V5121", "V5122",
                                                               "V5123", "V5124", "V5125", "V9001", "V4729", "V4732"))
@@ -319,9 +319,316 @@ pnadmig_2015 <- pnadmig_2015 %>%
   mutate(UF = str_extract(V0102, "^\\d{2}")) %>% #creates UF from the control variable
   mutate(year = 2015) #add year variable, V0101
 
+#Merging all datasets----------------------------------------------------------
+#Seems to be possible due to the stratification by state - each one behaving as a separate SRS (see page 32 of Lumley - Complex Surveys)
+
+pnadmig_2001_2015 <- rbind(pnadmig_2001, pnadmig_2002, pnadmig_2003, pnadmig_2004, pnadmig_2005,
+                           pnadmig_2006, pnadmig_2007, pnadmig_2008, pnadmig_2009,
+                           pnadmig_2011, pnadmig_2012, pnadmig_2013, pnadmig_2014, pnadmig_2015, fill = TRUE)
+
+#SOUTHEAST ANALYSIS
+##Filtering data for respondents in the Southeast--------------------------------
+
+pnadmig_2001_2015_SE <- pnadmig_2001_2015 %>%
+                        filter(UF %in% c("31", "32", "33", "35"))
+
+#Creation of survey designs-----------------------------------------------------
+
+#2001
+
+pnadmig_2001_SE <- pnadmig_2001_2015_SE %>%
+                   filter(year == 2001)
+
+pnadmig_2001d_SE <- svydesign(
+  ids = ~ PSU,
+  strata = ~ STRAT,
+  weight = ~ V4729,
+  data = pnadmig_2001_SE,
+  nest = TRUE
+)
+
+#2002
+
+pnadmig_2002_SE <- pnadmig_2001_2015_SE %>%
+  filter(year == 2002)
+
+pnadmig_2002d_SE <- svydesign(
+  ids = ~ V4618,
+  strata = ~ V4617,
+  weight = ~ V4729,
+  data = pnadmig_2002_SE,
+  nest = TRUE
+)
+
+#2003
+
+pnadmig_2003_SE <- pnadmig_2001_2015_SE %>%
+  filter(year == 2003)
+
+pnadmig_2003d_SE <- svydesign(
+  ids = ~ V4618,
+  strata = ~ V4617,
+  weight = ~ V4729,
+  data = pnadmig_2003_SE,
+  nest = TRUE
+)
+
+#2004
+
+pnadmig_2004_SE <- pnadmig_2001_2015_SE %>%
+  filter(year == 2004)
+
+pnadmig_2004d_SE <- svydesign(
+  ids = ~ V4618,
+  strata = ~ V4617,
+  weight = ~ V4729,
+  data = pnadmig_2004_SE,
+  nest = TRUE
+)
+
+#2005
+
+pnadmig_2005_SE <- pnadmig_2001_2015_SE %>%
+  filter(year == 2005)
+
+pnadmig_2005d_SE <- svydesign(
+  ids = ~ V4618,
+  strata = ~ V4617,
+  weight = ~ V4729,
+  data = pnadmig_2005_SE,
+  nest = TRUE
+)
+
+#2006
+
+pnadmig_2006_SE <- pnadmig_2001_2015_SE %>%
+  filter(year == 2006)
+
+pnadmig_2006d_SE <- svydesign(
+  ids = ~ V4618,
+  strata = ~ V4617,
+  weight = ~ V4729,
+  data = pnadmig_2006_SE,
+  nest = TRUE
+)
+
+#2007
+
+pnadmig_2007_SE <- pnadmig_2001_2015_SE %>%
+  filter(year == 2007)
+
+pnadmig_2007d_SE <- svydesign(
+  ids = ~ V4618,
+  strata = ~ V4617,
+  weight = ~ V4729,
+  data = pnadmig_2007_SE,
+  nest = TRUE
+)
+
+#2008
+
+pnadmig_2008_SE <- pnadmig_2001_2015_SE %>%
+  filter(year == 2008)
+
+pnadmig_2008d_SE <- svydesign(
+  ids = ~ V4618,
+  strata = ~ V4617,
+  weight = ~ V4729,
+  data = pnadmig_2008_SE,
+  nest = TRUE
+)
+
+#2009
+
+pnadmig_2009_SE <- pnadmig_2001_2015_SE %>%
+  filter(year == 2009)
+
+pnadmig_2009d_SE <- svydesign(
+  ids = ~ V4618,
+  strata = ~ V4617,
+  weight = ~ V4729,
+  data = pnadmig_2009_SE,
+  nest = TRUE
+)
+
+#2011
+
+pnadmig_2011_SE <- pnadmig_2001_2015_SE %>%
+  filter(year == 2011)
+
+pnadmig_2011d_SE <- svydesign(
+  ids = ~ V4618,
+  strata = ~ V4617,
+  weight = ~ V4729,
+  data = pnadmig_2011_SE,
+  nest = TRUE
+)
+
+#2012
+
+pnadmig_2012_SE <- pnadmig_2001_2015_SE %>%
+  filter(year == 2012)
+
+pnadmig_2012d_SE <- svydesign(
+  ids = ~ V4618,
+  strata = ~ V4617,
+  weight = ~ V4729,
+  data = pnadmig_2012_SE,
+  nest = TRUE
+)
+
+#2013
+
+pnadmig_2013_SE <- pnadmig_2001_2015_SE %>%
+  filter(year == 2013)
+
+pnadmig_2013d_SE <- svydesign(
+  ids = ~ V4618,
+  strata = ~ V4617,
+  weight = ~ V4729,
+  data = pnadmig_2013_SE,
+  nest = TRUE
+)
+
+#2014
+
+pnadmig_2014_SE <- pnadmig_2001_2015_SE %>%
+  filter(year == 2014)
+
+pnadmig_2014d_SE <- svydesign(
+  ids = ~ V4618,
+  strata = ~ V4617,
+  weight = ~ V4729,
+  data = pnadmig_2014_SE,
+  nest = TRUE
+)
+
+#2015
+
+pnadmig_2015_SE <- pnadmig_2001_2015_SE %>%
+  filter(year == 2015)
+
+pnadmig_2015d_SE <- svydesign(
+  ids = ~ V4618,
+  strata = ~ V4617,
+  weight = ~ V4729,
+  data = pnadmig_2015_SE,
+  nest = TRUE
+)
+
+#Analysis-----------------------------------------------------------------------
+
+##V0502 - Nasceu nesta UF
+
+###2001
+
+V0502_2001_SE <- svytotal(~V0502,
+                       design = pnadmig_2001d_SE,
+                       na.rm = TRUE)
+
+V0502_2001_SE <- as.data.frame(V0502_2001_SE) #dataframe
+rownames(V0502_2001_SE) <- c("Nao Aplicavel", "Sim - Nasceu nesta UF", "Nao - Nao nasceu nesta UF")
+V0502_2001_SE <- V0502_2001_SE %>% 
+              mutate(proportion = total/sum(total), year = "2001") #adding year and calculating proportion
+
+###2002
+
+options(survey.lonely.psu="adjust") #conservative solution to the stratum with only 1 PSU - the data for the single-PSU stratum are centered at the sample grand mean rather than the stratum mean.
+V0502_2002_SE <- svytotal(~V0502,
+                          design = pnadmig_2002d_SE,
+                          na.rm = TRUE)
+
+V0502_2002_SE <- as.data.frame(V0502_2002_SE) #dataframe
+rownames(V0502_2002_SE) <- c("Nao Aplicavel", "Sim - Nasceu nesta UF", "Nao - Nao nasceu nesta UF")
+V0502_2002_SE <- V0502_2002_SE %>% 
+  mutate(proportion = total/sum(total), year = "2002") #adding year and calculating proportion
+
+
+###2003
+
+V0502_2003_SE <- svytotal(~V0502,
+                          design = pnadmig_2003d_SE,
+                          na.rm = TRUE)
+
+V0502_2003_SE <- as.data.frame(V0502_2003_SE) #dataframe
+rownames(V0502_2003_SE) <- c("Nao Aplicavel", "Sim - Nasceu nesta UF", "Nao - Nao nasceu nesta UF")
+V0502_2003_SE <- V0502_2003_SE %>% 
+  mutate(proportion = total/sum(total), year = "2003") #adding year and calculating proportion
+
+###2004
+
+V0502_2004_SE <- svytotal(~V0502,
+                          design = pnadmig_2004d_SE,
+                          na.rm = TRUE)
+
+V0502_2004_SE <- as.data.frame(V0502_2004_SE) #dataframe
+rownames(V0502_2004_SE) <- c("Nao Aplicavel", "Sim - Nasceu nesta UF", "Nao - Nao nasceu nesta UF")
+V0502_2004_SE <- V0502_2004_SE %>% 
+  mutate(proportion = total/sum(total), year = "2004") #adding year and calculating proportion
+
+###2005
+
+V0502_2005_SE <- svytotal(~V0502,
+                          design = pnadmig_2005d_SE,
+                          na.rm = TRUE)
+
+V0502_2005_SE <- as.data.frame(V0502_2005_SE) #dataframe
+rownames(V0502_2005_SE) <- c("Nao Aplicavel", "Sim - Nasceu nesta UF", "Nao - Nao nasceu nesta UF")
+V0502_2005_SE <- V0502_2005_SE %>% 
+  mutate(proportion = total/sum(total), year = "2005") #adding year and calculating proportion
+
+###2006
+
+V0502_2006_SE <- svytotal(~V0502,
+                          design = pnadmig_2006d_SE,
+                          na.rm = TRUE)
+
+V0502_2006_SE <- as.data.frame(V0502_2006_SE) #dataframe
+rownames(V0502_2006_SE) <- c("Nao Aplicavel", "Sim - Nasceu nesta UF", "Nao - Nao nasceu nesta UF")
+V0502_2006_SE <- V0502_2006_SE %>% 
+  mutate(proportion = total/sum(total), year = "2006") #adding year and calculating proportion
+
+###2007
+
+V0502_2007_SE <- svytotal(~V0502,
+                          design = pnadmig_2007d_SE,
+                          na.rm = TRUE)
+
+V0502_2007_SE <- as.data.frame(V0502_2007_SE) #dataframe
+rownames(V0502_2007_SE) <- c("Nao Aplicavel", "Sim - Nasceu nesta UF", "Nao - Nao nasceu nesta UF")
+V0502_2007_SE <- V0502_2007_SE %>% 
+  mutate(proportion = total/sum(total), year = "2007") #adding year and calculating proportion
+
+###2008
+
+
+
+total_20012 <- sum(V0502_2001$total) 
+
+pnadmig_2001d <- svydesign(
+  ids = ~ PSU,
+  strata = ~ STRAT,
+  weight = ~ V4729,
+  data = pnadmig_2001,
+  nest = TRUE
+)
+
+
+
+tab_totals1 <- svytotal(~V0502,
+                       design = pnadmig_2001d,
+                       na.rm = TRUE)
 
 #Analysis ----------------------------------------------------------------------
-##2001
+
+
+
+
+
+##Creation of Survey Designs
+
+
+
 
 pnadmig_2001d <- svydesign(
                  ids = ~ PSU,
@@ -330,6 +637,115 @@ pnadmig_2001d <- svydesign(
                  data = pnadmig_2001,
                  nest = TRUE
 )
+
+pnadmig_2002d <- svydesign(
+  ids = ~ V4618,
+  strata = ~ V4617,
+  weight = ~ V4729,
+  data = pnadmig_2002,
+  nest = TRUE
+)
+
+pnadmig_2003d <- svydesign(
+  ids = ~ V4618,
+  strata = ~ V4617,
+  weight = ~ V4729,
+  data = pnadmig_2003,
+  nest = TRUE
+)
+
+pnadmig_2004d <- svydesign(
+  ids = ~ V4618,
+  strata = ~ V4617,
+  weight = ~ V4729,
+  data = pnadmig_2004,
+  nest = TRUE
+)
+
+pnadmig_2005d <- svydesign(
+  ids = ~ V4618,
+  strata = ~ V4617,
+  weight = ~ V4729,
+  data = pnadmig_2005,
+  nest = TRUE
+)
+
+pnadmig_2006d <- svydesign(
+  ids = ~ V4618,
+  strata = ~ V4617,
+  weight = ~ V4729,
+  data = pnadmig_2006,
+  nest = TRUE
+)
+
+pnadmig_2007d <- svydesign(
+  ids = ~ V4618,
+  strata = ~ V4617,
+  weight = ~ V4729,
+  data = pnadmig_2007,
+  nest = TRUE
+)
+
+pnadmig_2008d <- svydesign(
+  ids = ~ V4618,
+  strata = ~ V4617,
+  weight = ~ V4729,
+  data = pnadmig_2008,
+  nest = TRUE
+)
+
+pnadmig_2009d <- svydesign(
+  ids = ~ V4618,
+  strata = ~ V4617,
+  weight = ~ V4729,
+  data = pnadmig_2009,
+  nest = TRUE
+)
+
+pnadmig_2011d <- svydesign(
+  ids = ~ V4618,
+  strata = ~ V4617,
+  weight = ~ V4729,
+  data = pnadmig_2011,
+  nest = TRUE
+)
+
+pnadmig_2012d <- svydesign(
+  ids = ~ V4618,
+  strata = ~ V4617,
+  weight = ~ V4729,
+  data = pnadmig_2012,
+  nest = TRUE
+)
+
+pnadmig_2013d <- svydesign(
+  ids = ~ V4618,
+  strata = ~ V4617,
+  weight = ~ V4729,
+  data = pnadmig_2013,
+  nest = TRUE
+)
+
+pnadmig_2014d <- svydesign(
+  ids = ~ V4618,
+  strata = ~ V4617,
+  weight = ~ V4729,
+  data = pnadmig_2014,
+  nest = TRUE
+)
+
+pnadmig_2015d <- svydesign(
+  ids = ~ V4618,
+  strata = ~ V4617,
+  weight = ~ V4729,
+  data = pnadmig_2015,
+  nest = TRUE
+)
+
+##V0502 - nasceu na UF / V5030 - Unidade da Federação ou País em que nasceu
+
+
+
 
 svyby(pnadmig_2001$V0502, pnadmig_2001d)
 pnadmig
