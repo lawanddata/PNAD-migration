@@ -3,7 +3,7 @@
 .RData
 .Ruserdata
 /Data
-.txt
-.TXT
+*.txt
+*.TXT
 /Volumes/GoogleDrive/My Drive/DataProjects/Data
 *.zip
