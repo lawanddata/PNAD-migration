@@ -706,7 +706,6 @@ V0502_2001_2015_SE$nasceu_nesta_UF <- as.factor(V0502_2001_2015_SE$nasceu_nesta_
 ##  group_by(nasceu_nesta_UF) %>%               #group_by not working here to calculate change
 ##  mutate(prop_change = (proportion/lead(proportion) - 1) * 100)
 
-
 V0502_2001_2015_SE %>%
   filter(nasceu_nesta_UF == "Nao") %>%
   ggplot(mapping = aes(x = year, y = proportion)) +
