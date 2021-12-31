@@ -1,15 +1,46 @@
 ---
-title: "Migration PNAD - 2001-2015 - 2nd WB-UNHCR Forced Displacement Conference"
-output: html_notebook
+title: "Migration PNAD - 2001-2015"
+author: "Guilherme M. Dutra"
+date: "31 December 2021"
+output:
+  html_notebook:
+    toc: yes
+    number_sections: yes
+    toc_float: yes
+  html_document:
+    toc: yes
+    df_print: paged
+subtitle: 2nd WB-UNHCR Forced Displacement Conference
 ---
 
-This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. 
+```{r import, include=FALSE}
+rm(list = ls())
+source("import_code.R", local = knitr::knit_global())
+```
+<br>
+Migration variables are analysed in three steps:
 
-Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Cmd+Shift+Enter*. 
+- _Population_ - overview of the population covered in the region
+- _Respondents in the Southeast_ - filtering for respondents in the Southeast Region, in order to estimate immigration to the Southeast
+- _Respondents with state of origin in the Northeast_ - identifying respondents who are original from the Northeast, in order to estimate emmigration from that region
+
+*2010 is a census year so not included in the analysis (estimates to be included later)*
+
+# V0502 - Nasceu nesta UF
+
+## V0502_POP - Population
+### Change 2001-2015
 
 ```{r}
-plot(cars)
+
 ```
+
+## V0502_SE - Respondents in the Southeast
+
+## V0502_NE - State of origin - Northeast
+
+
+
 
 Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Cmd+Option+I*.
 
