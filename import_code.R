@@ -12,6 +12,7 @@ library(ggplot2)
 library(stringr)
 library(purrr)
 library(dplyr)
+library(janitor)
 
 #creates vector year
 ##years = c()
@@ -329,14 +330,16 @@ pnadmig_2001_2015 <- rbind(pnadmig_2001, pnadmig_2002, pnadmig_2003, pnadmig_200
 
 #Creation of survey design object-----------------------------------------------
 
+options(survey.lonely.psu="adjust") #conservative solution to the stratum with only 1 PSU - the data for the single-PSU stratum are centered at the sample grand mean rather than the stratum mean.
 pnadmig_2001_2015d <- svydesign(
                         ids = ~ V4618,
-                        strata = ~interaction(V4617, year),
+                        strata = ~interaction(V4617, year), #interaction between strata and year to treat as different strata - it combines each factor
                         weights = ~ V4729,
                         data = pnadmig_2001_2015,
                         nest = TRUE)
                         
-pnadmig_2002d_subset <- subset(pnadmig_2001_2015d, year == 2002)
 
-svytotal(~V0502, pnadmig_2002d_subset)
+#pnadmig_2002d_subset <- subset(pnadmig_2001_2015d, year == 2002)
+
+#svytotal(~V0502, pnadmig_2002d_subset)
 

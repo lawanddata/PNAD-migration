@@ -1,0 +1,470 @@
+---
+title: "Migration PNAD - 2001-2015"
+author: "Guilherme M. Dutra"
+date: "31 December 2021"
+output:
+  html_notebook:
+    toc: yes
+    number_sections: yes
+    toc_float: yes
+  html_document:
+    toc: yes
+    df_print: paged
+subtitle: 2nd WB-UNHCR Forced Displacement Conference
+---
+
+```{r import, include=FALSE}
+rm(list = ls())
+source("import_code.R", local = knitr::knit_global())
+```
+
+# Introduction
+
+We use variable V5080 to estimate migration flows in the last 5 years. The questions asks: 
+
+Em que Estado (ou Unidade da Federação) ou país estrangeiro ___ morava em _____________ [5 anos antes da data de referência]?
+
+Comparar numero 2010/2015 com o artigo https://www.scielo.br/j/rbeur/a/SCVMhkFZ7Hx7d7zwnp56h5q/?format=pdf&lang=pt
+
+## 2015
+
+### Freq table UF of respondent/UF lived 5 years before - 2015/2010
+
+```{r}
+#code_states <- c("11", "12", "13", "14", "15", "16", "17", "21", "22", "23", "24", "25", #"26", "27", "28", "29", "31", "32", "33", "35", "41", "42", "43", "50", "51", "52", "53", #"88", "98", " ")
+
+#name_states <- c("RO", "AC", "AM", "RR", "PA", "AP", "TO", "MA", "PI", "CE", "RN", "PB", #"PE", "AL", "SE", "BA", "MG", "ES", "RJ", "SP", "PR", "SC", "RS", "MS", "MT", "GO", "DF", #"Brasil", "Pais estrangeiro", "Nao aplicavel")
+
+pnadmig_2015d <- subset(pnadmig_2001_2015d, year == 2015)
+
+table_5080_UF_2015 <- svytable(~V5080 + UF,
+                      design = pnadmig_2015d)
+
+table_5080_UF_2015 <- as.data.frame(table_5080_UF_2015) %>%
+                      mutate(UF_resp = recode(UF, "11"="RO", "12"="AC", "13"="AM", "14"="RR", "15"="PA", "16"="AP", "17"="TO", "21"="MA", "22"="PI", "23"="CE", "24"="RN", "25"="PB", "26"="PE", "27"="AL", "28"="SE", "29"="BA", "31"="MG", "32"="ES", "33"="RJ", "35"="SP", "41"="PR", "42"="SC", "43"="RS", "50"="MS", "51"="MT", "52"="GO", "53"="DF", "88"="Brasil", "98"="Pais estrangeiro", " "="Nao aplicavel" )) %>%
+  mutate(UF_origin = recode(V5080, "11"="RO", "12"="AC", "13"="AM", "14"="RR", "15"="PA", "16"="AP", "17"="TO", "21"="MA", "22"="PI", "23"="CE", "24"="RN", "25"="PB", "26"="PE", "27"="AL", "28"="SE", "29"="BA", "31"="MG", "32"="ES", "33"="RJ", "35"="SP", "41"="PR", "42"="SC", "43"="RS", "50"="MS", "51"="MT", "52"="GO", "53"="DF", "88"="Brasil", "98"="Pais estrangeiro", " "="Nao aplicavel" )) %>%
+  mutate(reg_resp = recode(UF, "11"="Norte", "12"="Norte", "13"="Norte", "14"="Norte", "15"="Norte", "16"="Norte", "17"="Norte", "21"="Nordeste", "22"="Nordeste", "23"="Nordeste", "24"="Nordeste", "25"="Nordeste", "26"="Nordeste", "27"="Nordeste", "28"="Nordeste", "29"="Nordeste", "31"="Sudeste", "32"="Sudeste", "33"="Sudeste", "35"="Sudeste", "41"="Sul", "42"="Sul", "43"="Sul", "50"="Centro-Oeste", "51"="Centro-Oeste", "52"="Centro-Oeste", "53"="Centro-Oeste", "88"="Brasil", "98"="Pais estrangeiro", " "="Nao aplicavel" )) %>%
+  mutate(reg_origin = recode(V5080, "11"="Norte", "12"="Norte", "13"="Norte", "14"="Norte", "15"="Norte", "16"="Norte", "17"="Norte", "21"="Nordeste", "22"="Nordeste", "23"="Nordeste", "24"="Nordeste", "25"="Nordeste", "26"="Nordeste", "27"="Nordeste", "28"="Nordeste", "29"="Nordeste", "31"="Sudeste", "32"="Sudeste", "33"="Sudeste", "35"="Sudeste", "41"="Sul", "42"="Sul", "43"="Sul", "50"="Centro-Oeste", "51"="Centro-Oeste", "52"="Centro-Oeste", "53"="Centro-Oeste", "88"="Brasil", "98"="Pais estrangeiro", " "="Nao aplicavel" )) %>%
+  mutate(year = 2015) %>%
+  select(-UF, -V5080)
+            
+
+#prop.table(svytable(~V5080 + UF, #for calcualting proportions
+#design = pnadmig_2015d),margin = 1)
+```
+
+### Freq table UF of respondent/UF lived 5 years before - 2014/2009
+
+```{r}
+pnadmig_2014d <- subset(pnadmig_2001_2015d, year == 2014)
+
+table_5080_UF_2014 <- svytable(~V5080 + UF,
+                      design = pnadmig_2014d)
+
+table_5080_UF_2014 <- as.data.frame(table_5080_UF_2014) %>%
+                      mutate(UF_resp = recode(UF, "11"="RO", "12"="AC", "13"="AM", "14"="RR", "15"="PA", "16"="AP", "17"="TO", "21"="MA", "22"="PI", "23"="CE", "24"="RN", "25"="PB", "26"="PE", "27"="AL", "28"="SE", "29"="BA", "31"="MG", "32"="ES", "33"="RJ", "35"="SP", "41"="PR", "42"="SC", "43"="RS", "50"="MS", "51"="MT", "52"="GO", "53"="DF", "88"="Brasil", "98"="Pais estrangeiro", " "="Nao aplicavel" )) %>%
+  mutate(UF_origin = recode(V5080, "11"="RO", "12"="AC", "13"="AM", "14"="RR", "15"="PA", "16"="AP", "17"="TO", "21"="MA", "22"="PI", "23"="CE", "24"="RN", "25"="PB", "26"="PE", "27"="AL", "28"="SE", "29"="BA", "31"="MG", "32"="ES", "33"="RJ", "35"="SP", "41"="PR", "42"="SC", "43"="RS", "50"="MS", "51"="MT", "52"="GO", "53"="DF", "88"="Brasil", "98"="Pais estrangeiro", " "="Nao aplicavel" )) %>%
+  mutate(reg_resp = recode(UF, "11"="Norte", "12"="Norte", "13"="Norte", "14"="Norte", "15"="Norte", "16"="Norte", "17"="Norte", "21"="Nordeste", "22"="Nordeste", "23"="Nordeste", "24"="Nordeste", "25"="Nordeste", "26"="Nordeste", "27"="Nordeste", "28"="Nordeste", "29"="Nordeste", "31"="Sudeste", "32"="Sudeste", "33"="Sudeste", "35"="Sudeste", "41"="Sul", "42"="Sul", "43"="Sul", "50"="Centro-Oeste", "51"="Centro-Oeste", "52"="Centro-Oeste", "53"="Centro-Oeste", "88"="Brasil", "98"="Pais estrangeiro", " "="Nao aplicavel" )) %>%
+  mutate(reg_origin = recode(V5080, "11"="Norte", "12"="Norte", "13"="Norte", "14"="Norte", "15"="Norte", "16"="Norte", "17"="Norte", "21"="Nordeste", "22"="Nordeste", "23"="Nordeste", "24"="Nordeste", "25"="Nordeste", "26"="Nordeste", "27"="Nordeste", "28"="Nordeste", "29"="Nordeste", "31"="Sudeste", "32"="Sudeste", "33"="Sudeste", "35"="Sudeste", "41"="Sul", "42"="Sul", "43"="Sul", "50"="Centro-Oeste", "51"="Centro-Oeste", "52"="Centro-Oeste", "53"="Centro-Oeste", "88"="Brasil", "98"="Pais estrangeiro", " "="Nao aplicavel" )) %>%
+  mutate(year = 2014) %>%
+  select(-UF, -V5080)
+            
+
+#prop.table(svytable(~V5080 + UF, #for calcualting proportions
+#design = pnadmig_2015d),margin = 1)
+```
+
+
+## 2013
+
+### Freq table UF of respondent/UF lived 5 years before - 2013/2008
+
+```{r}
+pnadmig_2013d <- subset(pnadmig_2001_2015d, year == 2013)
+
+table_5080_UF_2013 <- svytable(~V5080 + UF,
+                      design = pnadmig_2013d)
+
+table_5080_UF_2013 <- as.data.frame(table_5080_UF_2013) %>%
+                      mutate(UF_resp = recode(UF, "11"="RO", "12"="AC", "13"="AM", "14"="RR", "15"="PA", "16"="AP", "17"="TO", "21"="MA", "22"="PI", "23"="CE", "24"="RN", "25"="PB", "26"="PE", "27"="AL", "28"="SE", "29"="BA", "31"="MG", "32"="ES", "33"="RJ", "35"="SP", "41"="PR", "42"="SC", "43"="RS", "50"="MS", "51"="MT", "52"="GO", "53"="DF", "88"="Brasil", "98"="Pais estrangeiro", " "="Nao aplicavel" )) %>%
+  mutate(UF_origin = recode(V5080, "11"="RO", "12"="AC", "13"="AM", "14"="RR", "15"="PA", "16"="AP", "17"="TO", "21"="MA", "22"="PI", "23"="CE", "24"="RN", "25"="PB", "26"="PE", "27"="AL", "28"="SE", "29"="BA", "31"="MG", "32"="ES", "33"="RJ", "35"="SP", "41"="PR", "42"="SC", "43"="RS", "50"="MS", "51"="MT", "52"="GO", "53"="DF", "88"="Brasil", "98"="Pais estrangeiro", " "="Nao aplicavel" )) %>%
+  mutate(reg_resp = recode(UF, "11"="Norte", "12"="Norte", "13"="Norte", "14"="Norte", "15"="Norte", "16"="Norte", "17"="Norte", "21"="Nordeste", "22"="Nordeste", "23"="Nordeste", "24"="Nordeste", "25"="Nordeste", "26"="Nordeste", "27"="Nordeste", "28"="Nordeste", "29"="Nordeste", "31"="Sudeste", "32"="Sudeste", "33"="Sudeste", "35"="Sudeste", "41"="Sul", "42"="Sul", "43"="Sul", "50"="Centro-Oeste", "51"="Centro-Oeste", "52"="Centro-Oeste", "53"="Centro-Oeste", "88"="Brasil", "98"="Pais estrangeiro", " "="Nao aplicavel" )) %>%
+  mutate(reg_origin = recode(V5080, "11"="Norte", "12"="Norte", "13"="Norte", "14"="Norte", "15"="Norte", "16"="Norte", "17"="Norte", "21"="Nordeste", "22"="Nordeste", "23"="Nordeste", "24"="Nordeste", "25"="Nordeste", "26"="Nordeste", "27"="Nordeste", "28"="Nordeste", "29"="Nordeste", "31"="Sudeste", "32"="Sudeste", "33"="Sudeste", "35"="Sudeste", "41"="Sul", "42"="Sul", "43"="Sul", "50"="Centro-Oeste", "51"="Centro-Oeste", "52"="Centro-Oeste", "53"="Centro-Oeste", "88"="Brasil", "98"="Pais estrangeiro", " "="Nao aplicavel" )) %>%
+  mutate(year = 2013) %>%
+  select(-UF, -V5080)
+            
+
+#prop.table(svytable(~V5080 + UF, #for calcualting proportions
+#design = pnadmig_2015d),margin = 1)
+```
+
+## 2012
+
+### Freq table UF of respondent/UF lived 5 years before - 2012/2007
+
+```{r}
+pnadmig_2012d <- subset(pnadmig_2001_2015d, year == 2012)
+
+table_5080_UF_2012 <- svytable(~V5080 + UF,
+                      design = pnadmig_2012d)
+
+table_5080_UF_2012 <- as.data.frame(table_5080_UF_2012) %>%
+                      mutate(UF_resp = recode(UF, "11"="RO", "12"="AC", "13"="AM", "14"="RR", "15"="PA", "16"="AP", "17"="TO", "21"="MA", "22"="PI", "23"="CE", "24"="RN", "25"="PB", "26"="PE", "27"="AL", "28"="SE", "29"="BA", "31"="MG", "32"="ES", "33"="RJ", "35"="SP", "41"="PR", "42"="SC", "43"="RS", "50"="MS", "51"="MT", "52"="GO", "53"="DF", "88"="Brasil", "98"="Pais estrangeiro", " "="Nao aplicavel" )) %>%
+  mutate(UF_origin = recode(V5080, "11"="RO", "12"="AC", "13"="AM", "14"="RR", "15"="PA", "16"="AP", "17"="TO", "21"="MA", "22"="PI", "23"="CE", "24"="RN", "25"="PB", "26"="PE", "27"="AL", "28"="SE", "29"="BA", "31"="MG", "32"="ES", "33"="RJ", "35"="SP", "41"="PR", "42"="SC", "43"="RS", "50"="MS", "51"="MT", "52"="GO", "53"="DF", "88"="Brasil", "98"="Pais estrangeiro", " "="Nao aplicavel" )) %>%
+  mutate(reg_resp = recode(UF, "11"="Norte", "12"="Norte", "13"="Norte", "14"="Norte", "15"="Norte", "16"="Norte", "17"="Norte", "21"="Nordeste", "22"="Nordeste", "23"="Nordeste", "24"="Nordeste", "25"="Nordeste", "26"="Nordeste", "27"="Nordeste", "28"="Nordeste", "29"="Nordeste", "31"="Sudeste", "32"="Sudeste", "33"="Sudeste", "35"="Sudeste", "41"="Sul", "42"="Sul", "43"="Sul", "50"="Centro-Oeste", "51"="Centro-Oeste", "52"="Centro-Oeste", "53"="Centro-Oeste", "88"="Brasil", "98"="Pais estrangeiro", " "="Nao aplicavel" )) %>%
+  mutate(reg_origin = recode(V5080, "11"="Norte", "12"="Norte", "13"="Norte", "14"="Norte", "15"="Norte", "16"="Norte", "17"="Norte", "21"="Nordeste", "22"="Nordeste", "23"="Nordeste", "24"="Nordeste", "25"="Nordeste", "26"="Nordeste", "27"="Nordeste", "28"="Nordeste", "29"="Nordeste", "31"="Sudeste", "32"="Sudeste", "33"="Sudeste", "35"="Sudeste", "41"="Sul", "42"="Sul", "43"="Sul", "50"="Centro-Oeste", "51"="Centro-Oeste", "52"="Centro-Oeste", "53"="Centro-Oeste", "88"="Brasil", "98"="Pais estrangeiro", " "="Nao aplicavel" )) %>%
+  mutate(year = 2012) %>%
+  select(-UF, -V5080)
+            
+
+#prop.table(svytable(~V5080 + UF, #for calcualting proportions
+#design = pnadmig_2015d),margin = 1)
+```
+
+### Freq table UF of respondent/UF lived 5 years before - 2011/2006
+
+```{r}
+pnadmig_2011d <- subset(pnadmig_2001_2015d, year == 2011)
+
+table_5080_UF_2011 <- svytable(~V5080 + UF,
+                      design = pnadmig_2011d)
+
+table_5080_UF_2011 <- as.data.frame(table_5080_UF_2011) %>%
+                      mutate(UF_resp = recode(UF, "11"="RO", "12"="AC", "13"="AM", "14"="RR", "15"="PA", "16"="AP", "17"="TO", "21"="MA", "22"="PI", "23"="CE", "24"="RN", "25"="PB", "26"="PE", "27"="AL", "28"="SE", "29"="BA", "31"="MG", "32"="ES", "33"="RJ", "35"="SP", "41"="PR", "42"="SC", "43"="RS", "50"="MS", "51"="MT", "52"="GO", "53"="DF", "88"="Brasil", "98"="Pais estrangeiro", " "="Nao aplicavel" )) %>%
+  mutate(UF_origin = recode(V5080, "11"="RO", "12"="AC", "13"="AM", "14"="RR", "15"="PA", "16"="AP", "17"="TO", "21"="MA", "22"="PI", "23"="CE", "24"="RN", "25"="PB", "26"="PE", "27"="AL", "28"="SE", "29"="BA", "31"="MG", "32"="ES", "33"="RJ", "35"="SP", "41"="PR", "42"="SC", "43"="RS", "50"="MS", "51"="MT", "52"="GO", "53"="DF", "88"="Brasil", "98"="Pais estrangeiro", " "="Nao aplicavel" )) %>%
+  mutate(reg_resp = recode(UF, "11"="Norte", "12"="Norte", "13"="Norte", "14"="Norte", "15"="Norte", "16"="Norte", "17"="Norte", "21"="Nordeste", "22"="Nordeste", "23"="Nordeste", "24"="Nordeste", "25"="Nordeste", "26"="Nordeste", "27"="Nordeste", "28"="Nordeste", "29"="Nordeste", "31"="Sudeste", "32"="Sudeste", "33"="Sudeste", "35"="Sudeste", "41"="Sul", "42"="Sul", "43"="Sul", "50"="Centro-Oeste", "51"="Centro-Oeste", "52"="Centro-Oeste", "53"="Centro-Oeste", "88"="Brasil", "98"="Pais estrangeiro", " "="Nao aplicavel" )) %>%
+  mutate(reg_origin = recode(V5080, "11"="Norte", "12"="Norte", "13"="Norte", "14"="Norte", "15"="Norte", "16"="Norte", "17"="Norte", "21"="Nordeste", "22"="Nordeste", "23"="Nordeste", "24"="Nordeste", "25"="Nordeste", "26"="Nordeste", "27"="Nordeste", "28"="Nordeste", "29"="Nordeste", "31"="Sudeste", "32"="Sudeste", "33"="Sudeste", "35"="Sudeste", "41"="Sul", "42"="Sul", "43"="Sul", "50"="Centro-Oeste", "51"="Centro-Oeste", "52"="Centro-Oeste", "53"="Centro-Oeste", "88"="Brasil", "98"="Pais estrangeiro", " "="Nao aplicavel" )) %>%
+  mutate(year = 2011) %>%
+  select(-UF, -V5080)
+            
+
+#prop.table(svytable(~V5080 + UF, #for calcualting proportions
+#design = pnadmig_2015d),margin = 1)
+```
+
+### Freq table UF of respondent/UF lived 5 years before - 2010/2005
+#Census year N/A
+
+### Freq table UF of respondent/UF lived 5 years before - 2009/2004
+
+```{r}
+pnadmig_2009d <- subset(pnadmig_2001_2015d, year == 2009)
+
+table_5080_UF_2009 <- svytable(~V5080 + UF,
+                      design = pnadmig_2009d)
+
+table_5080_UF_2009 <- as.data.frame(table_5080_UF_2009) %>%
+                      mutate(UF_resp = recode(UF, "11"="RO", "12"="AC", "13"="AM", "14"="RR", "15"="PA", "16"="AP", "17"="TO", "21"="MA", "22"="PI", "23"="CE", "24"="RN", "25"="PB", "26"="PE", "27"="AL", "28"="SE", "29"="BA", "31"="MG", "32"="ES", "33"="RJ", "35"="SP", "41"="PR", "42"="SC", "43"="RS", "50"="MS", "51"="MT", "52"="GO", "53"="DF", "88"="Brasil", "98"="Pais estrangeiro", " "="Nao aplicavel" )) %>%
+  mutate(UF_origin = recode(V5080, "11"="RO", "12"="AC", "13"="AM", "14"="RR", "15"="PA", "16"="AP", "17"="TO", "21"="MA", "22"="PI", "23"="CE", "24"="RN", "25"="PB", "26"="PE", "27"="AL", "28"="SE", "29"="BA", "31"="MG", "32"="ES", "33"="RJ", "35"="SP", "41"="PR", "42"="SC", "43"="RS", "50"="MS", "51"="MT", "52"="GO", "53"="DF", "88"="Brasil", "98"="Pais estrangeiro", " "="Nao aplicavel" )) %>%
+  mutate(reg_resp = recode(UF, "11"="Norte", "12"="Norte", "13"="Norte", "14"="Norte", "15"="Norte", "16"="Norte", "17"="Norte", "21"="Nordeste", "22"="Nordeste", "23"="Nordeste", "24"="Nordeste", "25"="Nordeste", "26"="Nordeste", "27"="Nordeste", "28"="Nordeste", "29"="Nordeste", "31"="Sudeste", "32"="Sudeste", "33"="Sudeste", "35"="Sudeste", "41"="Sul", "42"="Sul", "43"="Sul", "50"="Centro-Oeste", "51"="Centro-Oeste", "52"="Centro-Oeste", "53"="Centro-Oeste", "88"="Brasil", "98"="Pais estrangeiro", " "="Nao aplicavel" )) %>%
+  mutate(reg_origin = recode(V5080, "11"="Norte", "12"="Norte", "13"="Norte", "14"="Norte", "15"="Norte", "16"="Norte", "17"="Norte", "21"="Nordeste", "22"="Nordeste", "23"="Nordeste", "24"="Nordeste", "25"="Nordeste", "26"="Nordeste", "27"="Nordeste", "28"="Nordeste", "29"="Nordeste", "31"="Sudeste", "32"="Sudeste", "33"="Sudeste", "35"="Sudeste", "41"="Sul", "42"="Sul", "43"="Sul", "50"="Centro-Oeste", "51"="Centro-Oeste", "52"="Centro-Oeste", "53"="Centro-Oeste", "88"="Brasil", "98"="Pais estrangeiro", " "="Nao aplicavel" )) %>%
+  mutate(year = 2009) %>%
+  select(-UF, -V5080)
+            
+
+#prop.table(svytable(~V5080 + UF, #for calcualting proportions
+#design = pnadmig_2015d),margin = 1)
+```
+
+### Freq table UF of respondent/UF lived 5 years before - 2008/2003
+
+```{r}
+pnadmig_2008d <- subset(pnadmig_2001_2015d, year == 2008)
+
+table_5080_UF_2008 <- svytable(~V5080 + UF,
+                      design = pnadmig_2008d)
+
+table_5080_UF_2008 <- as.data.frame(table_5080_UF_2008) %>%
+                      mutate(UF_resp = recode(UF, "11"="RO", "12"="AC", "13"="AM", "14"="RR", "15"="PA", "16"="AP", "17"="TO", "21"="MA", "22"="PI", "23"="CE", "24"="RN", "25"="PB", "26"="PE", "27"="AL", "28"="SE", "29"="BA", "31"="MG", "32"="ES", "33"="RJ", "35"="SP", "41"="PR", "42"="SC", "43"="RS", "50"="MS", "51"="MT", "52"="GO", "53"="DF", "88"="Brasil", "98"="Pais estrangeiro", " "="Nao aplicavel" )) %>%
+  mutate(UF_origin = recode(V5080, "11"="RO", "12"="AC", "13"="AM", "14"="RR", "15"="PA", "16"="AP", "17"="TO", "21"="MA", "22"="PI", "23"="CE", "24"="RN", "25"="PB", "26"="PE", "27"="AL", "28"="SE", "29"="BA", "31"="MG", "32"="ES", "33"="RJ", "35"="SP", "41"="PR", "42"="SC", "43"="RS", "50"="MS", "51"="MT", "52"="GO", "53"="DF", "88"="Brasil", "98"="Pais estrangeiro", " "="Nao aplicavel" )) %>%
+  mutate(reg_resp = recode(UF, "11"="Norte", "12"="Norte", "13"="Norte", "14"="Norte", "15"="Norte", "16"="Norte", "17"="Norte", "21"="Nordeste", "22"="Nordeste", "23"="Nordeste", "24"="Nordeste", "25"="Nordeste", "26"="Nordeste", "27"="Nordeste", "28"="Nordeste", "29"="Nordeste", "31"="Sudeste", "32"="Sudeste", "33"="Sudeste", "35"="Sudeste", "41"="Sul", "42"="Sul", "43"="Sul", "50"="Centro-Oeste", "51"="Centro-Oeste", "52"="Centro-Oeste", "53"="Centro-Oeste", "88"="Brasil", "98"="Pais estrangeiro", " "="Nao aplicavel" )) %>%
+  mutate(reg_origin = recode(V5080, "11"="Norte", "12"="Norte", "13"="Norte", "14"="Norte", "15"="Norte", "16"="Norte", "17"="Norte", "21"="Nordeste", "22"="Nordeste", "23"="Nordeste", "24"="Nordeste", "25"="Nordeste", "26"="Nordeste", "27"="Nordeste", "28"="Nordeste", "29"="Nordeste", "31"="Sudeste", "32"="Sudeste", "33"="Sudeste", "35"="Sudeste", "41"="Sul", "42"="Sul", "43"="Sul", "50"="Centro-Oeste", "51"="Centro-Oeste", "52"="Centro-Oeste", "53"="Centro-Oeste", "88"="Brasil", "98"="Pais estrangeiro", " "="Nao aplicavel" )) %>%
+  mutate(year = 2008) %>%
+  select(-UF, -V5080)
+            
+
+#prop.table(svytable(~V5080 + UF, #for calcualting proportions
+#design = pnadmig_2015d),margin = 1)
+```
+
+
+### Freq table UF of respondent/UF lived 5 years before - 2007/2002
+
+```{r}
+pnadmig_2007d <- subset(pnadmig_2001_2015d, year == 2007)
+
+table_5080_UF_2007 <- svytable(~V5080 + UF,
+                      design = pnadmig_2007d)
+
+table_5080_UF_2007 <- as.data.frame(table_5080_UF_2007) %>%
+                      mutate(UF_resp = recode(UF, "11"="RO", "12"="AC", "13"="AM", "14"="RR", "15"="PA", "16"="AP", "17"="TO", "21"="MA", "22"="PI", "23"="CE", "24"="RN", "25"="PB", "26"="PE", "27"="AL", "28"="SE", "29"="BA", "31"="MG", "32"="ES", "33"="RJ", "35"="SP", "41"="PR", "42"="SC", "43"="RS", "50"="MS", "51"="MT", "52"="GO", "53"="DF", "88"="Brasil", "98"="Pais estrangeiro", " "="Nao aplicavel" )) %>%
+  mutate(UF_origin = recode(V5080, "11"="RO", "12"="AC", "13"="AM", "14"="RR", "15"="PA", "16"="AP", "17"="TO", "21"="MA", "22"="PI", "23"="CE", "24"="RN", "25"="PB", "26"="PE", "27"="AL", "28"="SE", "29"="BA", "31"="MG", "32"="ES", "33"="RJ", "35"="SP", "41"="PR", "42"="SC", "43"="RS", "50"="MS", "51"="MT", "52"="GO", "53"="DF", "88"="Brasil", "98"="Pais estrangeiro", " "="Nao aplicavel" )) %>%
+  mutate(reg_resp = recode(UF, "11"="Norte", "12"="Norte", "13"="Norte", "14"="Norte", "15"="Norte", "16"="Norte", "17"="Norte", "21"="Nordeste", "22"="Nordeste", "23"="Nordeste", "24"="Nordeste", "25"="Nordeste", "26"="Nordeste", "27"="Nordeste", "28"="Nordeste", "29"="Nordeste", "31"="Sudeste", "32"="Sudeste", "33"="Sudeste", "35"="Sudeste", "41"="Sul", "42"="Sul", "43"="Sul", "50"="Centro-Oeste", "51"="Centro-Oeste", "52"="Centro-Oeste", "53"="Centro-Oeste", "88"="Brasil", "98"="Pais estrangeiro", " "="Nao aplicavel" )) %>%
+  mutate(reg_origin = recode(V5080, "11"="Norte", "12"="Norte", "13"="Norte", "14"="Norte", "15"="Norte", "16"="Norte", "17"="Norte", "21"="Nordeste", "22"="Nordeste", "23"="Nordeste", "24"="Nordeste", "25"="Nordeste", "26"="Nordeste", "27"="Nordeste", "28"="Nordeste", "29"="Nordeste", "31"="Sudeste", "32"="Sudeste", "33"="Sudeste", "35"="Sudeste", "41"="Sul", "42"="Sul", "43"="Sul", "50"="Centro-Oeste", "51"="Centro-Oeste", "52"="Centro-Oeste", "53"="Centro-Oeste", "88"="Brasil", "98"="Pais estrangeiro", " "="Nao aplicavel" )) %>%
+  mutate(year = 2007) %>%
+  select(-UF, -V5080)
+            
+
+#prop.table(svytable(~V5080 + UF, #for calcualting proportions
+#design = pnadmig_2015d),margin = 1)
+```
+
+### Freq table UF of respondent/UF lived 5 years before - 2006/2001
+
+```{r}
+pnadmig_2006d <- subset(pnadmig_2001_2015d, year == 2006)
+
+table_5080_UF_2006 <- svytable(~V5080 + UF,
+                      design = pnadmig_2006d)
+
+table_5080_UF_2006 <- as.data.frame(table_5080_UF_2006) %>%
+                      mutate(UF_resp = recode(UF, "11"="RO", "12"="AC", "13"="AM", "14"="RR", "15"="PA", "16"="AP", "17"="TO", "21"="MA", "22"="PI", "23"="CE", "24"="RN", "25"="PB", "26"="PE", "27"="AL", "28"="SE", "29"="BA", "31"="MG", "32"="ES", "33"="RJ", "35"="SP", "41"="PR", "42"="SC", "43"="RS", "50"="MS", "51"="MT", "52"="GO", "53"="DF", "88"="Brasil", "98"="Pais estrangeiro", " "="Nao aplicavel" )) %>%
+  mutate(UF_origin = recode(V5080, "11"="RO", "12"="AC", "13"="AM", "14"="RR", "15"="PA", "16"="AP", "17"="TO", "21"="MA", "22"="PI", "23"="CE", "24"="RN", "25"="PB", "26"="PE", "27"="AL", "28"="SE", "29"="BA", "31"="MG", "32"="ES", "33"="RJ", "35"="SP", "41"="PR", "42"="SC", "43"="RS", "50"="MS", "51"="MT", "52"="GO", "53"="DF", "88"="Brasil", "98"="Pais estrangeiro", " "="Nao aplicavel" )) %>%
+  mutate(reg_resp = recode(UF, "11"="Norte", "12"="Norte", "13"="Norte", "14"="Norte", "15"="Norte", "16"="Norte", "17"="Norte", "21"="Nordeste", "22"="Nordeste", "23"="Nordeste", "24"="Nordeste", "25"="Nordeste", "26"="Nordeste", "27"="Nordeste", "28"="Nordeste", "29"="Nordeste", "31"="Sudeste", "32"="Sudeste", "33"="Sudeste", "35"="Sudeste", "41"="Sul", "42"="Sul", "43"="Sul", "50"="Centro-Oeste", "51"="Centro-Oeste", "52"="Centro-Oeste", "53"="Centro-Oeste", "88"="Brasil", "98"="Pais estrangeiro", " "="Nao aplicavel" )) %>%
+  mutate(reg_origin = recode(V5080, "11"="Norte", "12"="Norte", "13"="Norte", "14"="Norte", "15"="Norte", "16"="Norte", "17"="Norte", "21"="Nordeste", "22"="Nordeste", "23"="Nordeste", "24"="Nordeste", "25"="Nordeste", "26"="Nordeste", "27"="Nordeste", "28"="Nordeste", "29"="Nordeste", "31"="Sudeste", "32"="Sudeste", "33"="Sudeste", "35"="Sudeste", "41"="Sul", "42"="Sul", "43"="Sul", "50"="Centro-Oeste", "51"="Centro-Oeste", "52"="Centro-Oeste", "53"="Centro-Oeste", "88"="Brasil", "98"="Pais estrangeiro", " "="Nao aplicavel" )) %>%
+  mutate(year = 2006) %>%
+  select(-UF, -V5080)
+            
+
+#prop.table(svytable(~V5080 + UF, #for calcualting proportions
+#design = pnadmig_2015d),margin = 1)
+```
+
+### Freq table UF of respondent/UF lived 5 years before - 2005/2000
+
+```{r}
+pnadmig_2005d <- subset(pnadmig_2001_2015d, year == 2005)
+
+table_5080_UF_2005 <- svytable(~V5080 + UF,
+                      design = pnadmig_2005d)
+
+table_5080_UF_2005 <- as.data.frame(table_5080_UF_2005) %>%
+                      mutate(UF_resp = recode(UF, "11"="RO", "12"="AC", "13"="AM", "14"="RR", "15"="PA", "16"="AP", "17"="TO", "21"="MA", "22"="PI", "23"="CE", "24"="RN", "25"="PB", "26"="PE", "27"="AL", "28"="SE", "29"="BA", "31"="MG", "32"="ES", "33"="RJ", "35"="SP", "41"="PR", "42"="SC", "43"="RS", "50"="MS", "51"="MT", "52"="GO", "53"="DF", "88"="Brasil", "98"="Pais estrangeiro", " "="Nao aplicavel" )) %>%
+  mutate(UF_origin = recode(V5080, "11"="RO", "12"="AC", "13"="AM", "14"="RR", "15"="PA", "16"="AP", "17"="TO", "21"="MA", "22"="PI", "23"="CE", "24"="RN", "25"="PB", "26"="PE", "27"="AL", "28"="SE", "29"="BA", "31"="MG", "32"="ES", "33"="RJ", "35"="SP", "41"="PR", "42"="SC", "43"="RS", "50"="MS", "51"="MT", "52"="GO", "53"="DF", "88"="Brasil", "98"="Pais estrangeiro", " "="Nao aplicavel" )) %>%
+  mutate(reg_resp = recode(UF, "11"="Norte", "12"="Norte", "13"="Norte", "14"="Norte", "15"="Norte", "16"="Norte", "17"="Norte", "21"="Nordeste", "22"="Nordeste", "23"="Nordeste", "24"="Nordeste", "25"="Nordeste", "26"="Nordeste", "27"="Nordeste", "28"="Nordeste", "29"="Nordeste", "31"="Sudeste", "32"="Sudeste", "33"="Sudeste", "35"="Sudeste", "41"="Sul", "42"="Sul", "43"="Sul", "50"="Centro-Oeste", "51"="Centro-Oeste", "52"="Centro-Oeste", "53"="Centro-Oeste", "88"="Brasil", "98"="Pais estrangeiro", " "="Nao aplicavel" )) %>%
+  mutate(reg_origin = recode(V5080, "11"="Norte", "12"="Norte", "13"="Norte", "14"="Norte", "15"="Norte", "16"="Norte", "17"="Norte", "21"="Nordeste", "22"="Nordeste", "23"="Nordeste", "24"="Nordeste", "25"="Nordeste", "26"="Nordeste", "27"="Nordeste", "28"="Nordeste", "29"="Nordeste", "31"="Sudeste", "32"="Sudeste", "33"="Sudeste", "35"="Sudeste", "41"="Sul", "42"="Sul", "43"="Sul", "50"="Centro-Oeste", "51"="Centro-Oeste", "52"="Centro-Oeste", "53"="Centro-Oeste", "88"="Brasil", "98"="Pais estrangeiro", " "="Nao aplicavel" )) %>%
+  mutate(year = 2005) %>%
+  select(-UF, -V5080)
+            
+
+#prop.table(svytable(~V5080 + UF, #for calcualting proportions
+#design = pnadmig_2015d),margin = 1)
+```
+
+### Freq table UF of respondent/UF lived 5 years before - 2004/1999
+
+```{r}
+pnadmig_2004d <- subset(pnadmig_2001_2015d, year == 2004)
+
+table_5080_UF_2004 <- svytable(~V5080 + UF,
+                      design = pnadmig_2004d)
+
+table_5080_UF_2004 <- as.data.frame(table_5080_UF_2004) %>%
+                      mutate(UF_resp = recode(UF, "11"="RO", "12"="AC", "13"="AM", "14"="RR", "15"="PA", "16"="AP", "17"="TO", "21"="MA", "22"="PI", "23"="CE", "24"="RN", "25"="PB", "26"="PE", "27"="AL", "28"="SE", "29"="BA", "31"="MG", "32"="ES", "33"="RJ", "35"="SP", "41"="PR", "42"="SC", "43"="RS", "50"="MS", "51"="MT", "52"="GO", "53"="DF", "88"="Brasil", "98"="Pais estrangeiro", " "="Nao aplicavel" )) %>%
+  mutate(UF_origin = recode(V5080, "11"="RO", "12"="AC", "13"="AM", "14"="RR", "15"="PA", "16"="AP", "17"="TO", "21"="MA", "22"="PI", "23"="CE", "24"="RN", "25"="PB", "26"="PE", "27"="AL", "28"="SE", "29"="BA", "31"="MG", "32"="ES", "33"="RJ", "35"="SP", "41"="PR", "42"="SC", "43"="RS", "50"="MS", "51"="MT", "52"="GO", "53"="DF", "88"="Brasil", "98"="Pais estrangeiro", " "="Nao aplicavel" )) %>%
+  mutate(reg_resp = recode(UF, "11"="Norte", "12"="Norte", "13"="Norte", "14"="Norte", "15"="Norte", "16"="Norte", "17"="Norte", "21"="Nordeste", "22"="Nordeste", "23"="Nordeste", "24"="Nordeste", "25"="Nordeste", "26"="Nordeste", "27"="Nordeste", "28"="Nordeste", "29"="Nordeste", "31"="Sudeste", "32"="Sudeste", "33"="Sudeste", "35"="Sudeste", "41"="Sul", "42"="Sul", "43"="Sul", "50"="Centro-Oeste", "51"="Centro-Oeste", "52"="Centro-Oeste", "53"="Centro-Oeste", "88"="Brasil", "98"="Pais estrangeiro", " "="Nao aplicavel" )) %>%
+  mutate(reg_origin = recode(V5080, "11"="Norte", "12"="Norte", "13"="Norte", "14"="Norte", "15"="Norte", "16"="Norte", "17"="Norte", "21"="Nordeste", "22"="Nordeste", "23"="Nordeste", "24"="Nordeste", "25"="Nordeste", "26"="Nordeste", "27"="Nordeste", "28"="Nordeste", "29"="Nordeste", "31"="Sudeste", "32"="Sudeste", "33"="Sudeste", "35"="Sudeste", "41"="Sul", "42"="Sul", "43"="Sul", "50"="Centro-Oeste", "51"="Centro-Oeste", "52"="Centro-Oeste", "53"="Centro-Oeste", "88"="Brasil", "98"="Pais estrangeiro", " "="Nao aplicavel" )) %>%
+  mutate(year = 2004) %>%
+  select(-UF, -V5080)
+            
+
+#prop.table(svytable(~V5080 + UF, #for calcualting proportions
+#design = pnadmig_2015d),margin = 1)
+```
+
+### Freq table UF of respondent/UF lived 5 years before - 2003/1998
+
+```{r}
+pnadmig_2003d <- subset(pnadmig_2001_2015d, year == 2003)
+
+table_5080_UF_2003 <- svytable(~V5080 + UF,
+                      design = pnadmig_2003d)
+
+table_5080_UF_2003 <- as.data.frame(table_5080_UF_2003) %>%
+                      mutate(UF_resp = recode(UF, "11"="RO", "12"="AC", "13"="AM", "14"="RR", "15"="PA", "16"="AP", "17"="TO", "21"="MA", "22"="PI", "23"="CE", "24"="RN", "25"="PB", "26"="PE", "27"="AL", "28"="SE", "29"="BA", "31"="MG", "32"="ES", "33"="RJ", "35"="SP", "41"="PR", "42"="SC", "43"="RS", "50"="MS", "51"="MT", "52"="GO", "53"="DF", "88"="Brasil", "98"="Pais estrangeiro", " "="Nao aplicavel" )) %>%
+  mutate(UF_origin = recode(V5080, "11"="RO", "12"="AC", "13"="AM", "14"="RR", "15"="PA", "16"="AP", "17"="TO", "21"="MA", "22"="PI", "23"="CE", "24"="RN", "25"="PB", "26"="PE", "27"="AL", "28"="SE", "29"="BA", "31"="MG", "32"="ES", "33"="RJ", "35"="SP", "41"="PR", "42"="SC", "43"="RS", "50"="MS", "51"="MT", "52"="GO", "53"="DF", "88"="Brasil", "98"="Pais estrangeiro", " "="Nao aplicavel" )) %>%
+  mutate(reg_resp = recode(UF, "11"="Norte", "12"="Norte", "13"="Norte", "14"="Norte", "15"="Norte", "16"="Norte", "17"="Norte", "21"="Nordeste", "22"="Nordeste", "23"="Nordeste", "24"="Nordeste", "25"="Nordeste", "26"="Nordeste", "27"="Nordeste", "28"="Nordeste", "29"="Nordeste", "31"="Sudeste", "32"="Sudeste", "33"="Sudeste", "35"="Sudeste", "41"="Sul", "42"="Sul", "43"="Sul", "50"="Centro-Oeste", "51"="Centro-Oeste", "52"="Centro-Oeste", "53"="Centro-Oeste", "88"="Brasil", "98"="Pais estrangeiro", " "="Nao aplicavel" )) %>%
+  mutate(reg_origin = recode(V5080, "11"="Norte", "12"="Norte", "13"="Norte", "14"="Norte", "15"="Norte", "16"="Norte", "17"="Norte", "21"="Nordeste", "22"="Nordeste", "23"="Nordeste", "24"="Nordeste", "25"="Nordeste", "26"="Nordeste", "27"="Nordeste", "28"="Nordeste", "29"="Nordeste", "31"="Sudeste", "32"="Sudeste", "33"="Sudeste", "35"="Sudeste", "41"="Sul", "42"="Sul", "43"="Sul", "50"="Centro-Oeste", "51"="Centro-Oeste", "52"="Centro-Oeste", "53"="Centro-Oeste", "88"="Brasil", "98"="Pais estrangeiro", " "="Nao aplicavel" )) %>%
+  mutate(year = 2003) %>%
+  select(-UF, -V5080)
+            
+
+#prop.table(svytable(~V5080 + UF, #for calcualting proportions
+#design = pnadmig_2015d),margin = 1)
+```
+
+### Freq table UF of respondent/UF lived 5 years before - 2002/1997
+
+```{r}
+pnadmig_2002d <- subset(pnadmig_2001_2015d, year == 2002)
+
+table_5080_UF_2002 <- svytable(~V5080 + UF,
+                      design = pnadmig_2002d)
+
+table_5080_UF_2002 <- as.data.frame(table_5080_UF_2002) %>%
+                      mutate(UF_resp = recode(UF, "11"="RO", "12"="AC", "13"="AM", "14"="RR", "15"="PA", "16"="AP", "17"="TO", "21"="MA", "22"="PI", "23"="CE", "24"="RN", "25"="PB", "26"="PE", "27"="AL", "28"="SE", "29"="BA", "31"="MG", "32"="ES", "33"="RJ", "35"="SP", "41"="PR", "42"="SC", "43"="RS", "50"="MS", "51"="MT", "52"="GO", "53"="DF", "88"="Brasil", "98"="Pais estrangeiro", " "="Nao aplicavel" )) %>%
+  mutate(UF_origin = recode(V5080, "11"="RO", "12"="AC", "13"="AM", "14"="RR", "15"="PA", "16"="AP", "17"="TO", "21"="MA", "22"="PI", "23"="CE", "24"="RN", "25"="PB", "26"="PE", "27"="AL", "28"="SE", "29"="BA", "31"="MG", "32"="ES", "33"="RJ", "35"="SP", "41"="PR", "42"="SC", "43"="RS", "50"="MS", "51"="MT", "52"="GO", "53"="DF", "88"="Brasil", "98"="Pais estrangeiro", " "="Nao aplicavel" )) %>%
+  mutate(reg_resp = recode(UF, "11"="Norte", "12"="Norte", "13"="Norte", "14"="Norte", "15"="Norte", "16"="Norte", "17"="Norte", "21"="Nordeste", "22"="Nordeste", "23"="Nordeste", "24"="Nordeste", "25"="Nordeste", "26"="Nordeste", "27"="Nordeste", "28"="Nordeste", "29"="Nordeste", "31"="Sudeste", "32"="Sudeste", "33"="Sudeste", "35"="Sudeste", "41"="Sul", "42"="Sul", "43"="Sul", "50"="Centro-Oeste", "51"="Centro-Oeste", "52"="Centro-Oeste", "53"="Centro-Oeste", "88"="Brasil", "98"="Pais estrangeiro", " "="Nao aplicavel" )) %>%
+  mutate(reg_origin = recode(V5080, "11"="Norte", "12"="Norte", "13"="Norte", "14"="Norte", "15"="Norte", "16"="Norte", "17"="Norte", "21"="Nordeste", "22"="Nordeste", "23"="Nordeste", "24"="Nordeste", "25"="Nordeste", "26"="Nordeste", "27"="Nordeste", "28"="Nordeste", "29"="Nordeste", "31"="Sudeste", "32"="Sudeste", "33"="Sudeste", "35"="Sudeste", "41"="Sul", "42"="Sul", "43"="Sul", "50"="Centro-Oeste", "51"="Centro-Oeste", "52"="Centro-Oeste", "53"="Centro-Oeste", "88"="Brasil", "98"="Pais estrangeiro", " "="Nao aplicavel" )) %>%
+  mutate(year = 2002) %>%
+  select(-UF, -V5080)
+            
+
+#prop.table(svytable(~V5080 + UF, #for calcualting proportions
+#design = pnadmig_2015d),margin = 1)
+```
+
+### Freq table UF of respondent/UF lived 5 years before - 2001/1996
+
+```{r}
+pnadmig_2001d <- subset(pnadmig_2001_2015d, year == 2001)
+
+table_5080_UF_2001 <- svytable(~V5080 + UF,
+                      design = pnadmig_2001d)
+
+table_5080_UF_2001 <- as.data.frame(table_5080_UF_2001) %>% #use recode to rename the levels of factor
+                      mutate(UF_resp = recode(UF, "11"="RO", "12"="AC", "13"="AM", "14"="RR", "15"="PA", "16"="AP", "17"="TO", "21"="MA", "22"="PI", "23"="CE", "24"="RN", "25"="PB", "26"="PE", "27"="AL", "28"="SE", "29"="BA", "31"="MG", "32"="ES", "33"="RJ", "35"="SP", "41"="PR", "42"="SC", "43"="RS", "50"="MS", "51"="MT", "52"="GO", "53"="DF", "88"="Brasil", "98"="Pais estrangeiro", " "="Nao aplicavel" )) %>%
+  mutate(UF_origin = recode(V5080, "11"="RO", "12"="AC", "13"="AM", "14"="RR", "15"="PA", "16"="AP", "17"="TO", "21"="MA", "22"="PI", "23"="CE", "24"="RN", "25"="PB", "26"="PE", "27"="AL", "28"="SE", "29"="BA", "31"="MG", "32"="ES", "33"="RJ", "35"="SP", "41"="PR", "42"="SC", "43"="RS", "50"="MS", "51"="MT", "52"="GO", "53"="DF", "88"="Brasil", "98"="Pais estrangeiro", " "="Nao aplicavel" )) %>%
+  mutate(reg_resp = recode(UF, "11"="Norte", "12"="Norte", "13"="Norte", "14"="Norte", "15"="Norte", "16"="Norte", "17"="Norte", "21"="Nordeste", "22"="Nordeste", "23"="Nordeste", "24"="Nordeste", "25"="Nordeste", "26"="Nordeste", "27"="Nordeste", "28"="Nordeste", "29"="Nordeste", "31"="Sudeste", "32"="Sudeste", "33"="Sudeste", "35"="Sudeste", "41"="Sul", "42"="Sul", "43"="Sul", "50"="Centro-Oeste", "51"="Centro-Oeste", "52"="Centro-Oeste", "53"="Centro-Oeste", "88"="Brasil", "98"="Pais estrangeiro", " "="Nao aplicavel" )) %>%
+  mutate(reg_origin = recode(V5080, "11"="Norte", "12"="Norte", "13"="Norte", "14"="Norte", "15"="Norte", "16"="Norte", "17"="Norte", "21"="Nordeste", "22"="Nordeste", "23"="Nordeste", "24"="Nordeste", "25"="Nordeste", "26"="Nordeste", "27"="Nordeste", "28"="Nordeste", "29"="Nordeste", "31"="Sudeste", "32"="Sudeste", "33"="Sudeste", "35"="Sudeste", "41"="Sul", "42"="Sul", "43"="Sul", "50"="Centro-Oeste", "51"="Centro-Oeste", "52"="Centro-Oeste", "53"="Centro-Oeste", "88"="Brasil", "98"="Pais estrangeiro", " "="Nao aplicavel" )) %>%
+  mutate(year = 2001) %>%
+  select(-UF, -V5080)
+            
+
+#prop.table(svytable(~V5080 + UF, #for calcualting proportions
+#design = pnadmig_2015d),margin = 1)
+```
+
+#Table with all years
+
+```{r}
+table_5080_UF_2001_2015 <- bind_rows(table_5080_UF_2001, table_5080_UF_2002, table_5080_UF_2003, table_5080_UF_2004, table_5080_UF_2005, table_5080_UF_2006, table_5080_UF_2007, table_5080_UF_2008, table_5080_UF_2009, table_5080_UF_2011, table_5080_UF_2012, table_5080_UF_2013, table_5080_UF_2014, table_5080_UF_2015)
+```
+
+# Emigration from NE to all region
+
+Conditions:
+1. Respondent (UF) not in NE
+2. State of origin (V5080) in NE
+
+##Calculating emigration from NE by period (to all regions) - the year columnt indicates the final year (flow between year and year - 5)
+
+```{r}
+emigration_NE_2001_2015 <- table_5080_UF_2001_2015 %>%
+  filter(reg_origin == "Nordeste") %>% #filtering respondents who were in NE 5 years before
+  filter(reg_resp != "Nordeste") %>% #filtering respondents who are in any other region (expcept NE) when answering the survey in 2015 %>%
+  group_by(year) %>%
+  summarize(emigration_NE = sum(Freq)) %>% #calculating emigration flow from the NE 
+  ungroup()
+  
+```
+
+##Calculating immigration to NE by period (from all regions) - the year column indicates the final year (flow between year and year - 5)
+
+```{r}
+immigration_NE_2001_2015 <- table_5080_UF_2001_2015 %>%
+  filter(reg_origin != "Nordeste") %>% #respondents who were not living in the NE in 2010
+  filter(reg_resp == "Nordeste") %>% #respondents in who are in the NE in 2015
+  filter(UF_origin != "") %>% #removing the UF population row
+  filter(UF_origin != "Pais estrangeiro") %>% #removing immigrants from foreign countries
+  group_by(year) %>%
+  summarize(immigration_NE = sum(Freq)) %>%
+  ungroup()
+```
+
+##Join for migration NE
+
+```{r}
+migration_NE_2001_2015 <- inner_join(emigration_NE_2001_2015, immigration_NE_2001_2015, by = "year") %>%
+  mutate(net_migration_NE = immigration_NE-emigration_NE)
+
+```
+
+##Calcular em relaçao ao estoque populacional
+###Necessário pegar dados de população pro ano inicial do fluxo
+###cf. http://repositorio.ipea.gov.br/bitstream/11058/2836/1/td_0657.pdf
+
+```{r}
+#pop_stock_2001_2015 <- table_5080_UF_2001_2015 %>%
+#  filter(reg_resp == "Nordeste" & UF_origin == "") 
+                
+```
+
+#People in the SE who migrated from NE
+
+Condição:
+1. Respondent (UF) in SE
+2. State of origin (V5080) in NE
+
+```{r}
+emigration_NE_SE_2001_2015 <- table_5080_UF_2001_2015 %>%
+  filter(reg_origin == "Nordeste") %>% #filtering respondents who were in NE 5 years before
+  filter(reg_resp == "Sudeste") %>% #filtering respondents who were in the SE when answering the survey %>%
+  group_by(year) %>%
+  summarize(migration_NE_SE = sum(Freq)) %>% #calculating emigration flow from the NE 
+  ungroup()
+```
+
+
+#Join tables with data for the 5 year period migration flows
+
+```{r}
+migration_5year_2001_2015 <- inner_join(emigration_NE_SE_2001_2015, migration_NE_2001_2015, by = "year")
+```
+
+#Adding start_year/end_year
+
+```{r}
+migration_5year_2001_2015 <- migration_5year_2001_2015 %>% 
+                             rename(end_year = year) %>%
+                             mutate(start_year = end_year-5) %>%
+                             relocate("start_year", "end_year", "migration_NE_SE", "emigration_NE", "immigration_NE", "net_migration_NE")
+```
+
+[NOT USED]
+
+#Calculate the population in the NE for migration p. 1,000 pop
+
+Estimates from IBGE/SUS follow different methodologies in the time period analysed, so will use PNAD projected data + weights to estimate regional population
+
+```{r}
+#pop_UF_2001 <- as.data.frame(svytable(
+#                             ~ UF + V8005,
+#                             design = pnadmig_2001d))
+
+#pop_UF_2001$V8005 <- as.numeric(pop_UF_2001$V8005)
+
+#pop_reg_2001 <- pop_UF_2001 %>%
+#                mutate(reg = recode(UF, "11"="Norte", "12"="Norte", "13"="Norte", "14"="Norte", "15"="Norte", "16"="Norte", "17"="Norte", "21"="Nordeste", "22"="Nordeste", "23"="Nordeste", "24"="Nordeste", "25"="Nordeste", "26"="Nordeste", "27"="Nordeste", "28"="Nordeste", "29"="Nordeste", "31"="Sudeste", "32"="Sudeste", "33"="Sudeste", "35"="Sudeste", "41"="Sul", "42"="Sul", "43"="Sul", "50"="Centro-Oeste", "51"="Centro-Oeste", "52"="Centro-Oeste", "53"="Centro-Oeste", "88"="Brasil", "98"="Pais estrangeiro", " "="Nao aplicavel" )) %>%
+#                filter(V8005 >= 5) %>%
+#                group_by(reg) %>%
+#                summarise(pop_2001 = sum(Freq)) %>%
+#                adorn_totals() #adds new row with totals
+
+
+#pop_NE_2001 <- pop_NE_2001 %>%
+#              mutate_if(is.factor, as.numeric) to mutate according to condition
+```
+
+[END OF NOT USED]
+
+##Calculate the population in the NE for migration p. 1,000 pop
+###Reading pop NE
+
+```{r}
+pop_BR_1995_2010 <- read.csv("./Data/IBGE_popNE_1995_2010.csv", sep=";") #no data for 1996, using 1995 data - vem por município #populacao estimada IBGE available here: http://tabnet.datasus.gov.br/cgi/deftohtm.exe?ibge/cnv/poptbr.def
+
+strings_NE <- c("^21", "^22", "^23", "^24", "^25", "^26", "^27", "^28", "^29") #create string criteria for UFs in the NE - the ^ means 'starting with' then followed by the code of the state
+
+pop_NE_1995_2010 <- pop_BR_1995_2010 %>%
+                    filter(str_detect(Município, paste(strings_NE, collapse = "|"))) %>% #filters for the strings vector municipio in the nE, using the | operator (or) 
+                    mutate_if(is.character, as.numeric) %>% #convert columns to numeric, other option #mutate_all can do it here just because município doesn't matter
+                    adorn_totals() %>% #linha com totais
+                    filter(Município == "Total")
+
+# pop_NE_1995_2010$ <- gsub("X", "", pop_NE_1995_2010) #PRÓXIMO PASSO REMOVER O X ANTES DAS COLUNAS 
+
+
+```
+
+

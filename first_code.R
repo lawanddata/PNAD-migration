@@ -356,6 +356,8 @@ pnadmig_2002d <- svydesign(
   nest = TRUE
 )
 
+svytotal(~V0502, pnadmig_2002d)
+
 #2003
 
 pnadmig_2003d <- svydesign(
@@ -512,6 +514,12 @@ pnadmig_2002d_SE <- svydesign(
   data = pnadmig_2002_SE,
   nest = TRUE
 )
+
+V0502_2002__SE <- svyby(
+  ~V0502, 
+  by = ~year, 
+  design = pnadmig_2002d_SE, 
+  svytotal)
 
 #2003
 
